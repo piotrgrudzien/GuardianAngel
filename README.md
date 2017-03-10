@@ -1,2 +1,2 @@
 # GuardianAngel
-How about have a process that sits there silently on your computer and learns things about you
+The purpose of the project is to create a Java process that monitors keystrokes on one's computer. Data is stored and used to train a model that would predict future keystrokes. Example applications include: proving how humans are unable to generate random keystrokes, personalised autocorrect, models for character prediction based solely on timings between keystrokes (typing without a keyboard).
