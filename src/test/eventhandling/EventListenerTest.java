@@ -6,6 +6,6 @@ import com.sun.media.jfxmedia.logging.Logger;
 public class EventListenerTest {
     public static void main(String[] args) {
 
-        EventListener myEventListener = new EventListener();
+        EventListener myEventListener = new BackgroundEventListener(new StoreEventHandlerFactory());
     }
 }
