@@ -12,9 +12,9 @@ import java.awt.event.*;
 /**
  * Created by piotrgrudzien on 3/10/17.
  */
-public class MyEventListener implements ActionListener, ItemListener, NativeKeyListener, NativeMouseInputListener, NativeMouseWheelListener, WindowListener {
+public class EventListener implements NativeKeyListener, NativeMouseInputListener, NativeMouseWheelListener {
 
-    public MyEventListener() {
+    public EventListener() {
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException e) {
@@ -26,79 +26,39 @@ public class MyEventListener implements ActionListener, ItemListener, NativeKeyL
         GlobalScreen.addNativeMouseWheelListener(this);
     }
 
-    public static void main(String[] args) {
-        MyEventListener myEventListener = new MyEventListener();
-    }
-
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-    public void itemStateChanged(ItemEvent e) {
-
-    }
-
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    public void windowClosing(WindowEvent e) {
-
-    }
-
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    public void windowDeactivated(WindowEvent e) {
-
-    }
-
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-
+        System.out.println(nativeKeyEvent.paramString());
     }
 
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-
+        System.out.println(nativeKeyEvent.paramString());
     }
 
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-
+        System.out.println(nativeKeyEvent.paramString());
     }
 
     public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-
+        System.out.println(nativeMouseEvent.paramString());
     }
 
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-
+        System.out.println(nativeMouseEvent.paramString());
     }
 
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-
+        System.out.println(nativeMouseEvent.paramString());
     }
 
     public void nativeMouseMoved(NativeMouseEvent nativeMouseEvent) {
-
+        System.out.println(nativeMouseEvent.paramString());
     }
 
     public void nativeMouseDragged(NativeMouseEvent nativeMouseEvent) {
-
+        System.out.println(nativeMouseEvent.paramString());
     }
 
     public void nativeMouseWheelMoved(NativeMouseWheelEvent nativeMouseWheelEvent) {
-
+        System.out.println(nativeMouseWheelEvent.paramString());
     }
 }
