@@ -6,9 +6,21 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public interface EventHandler {
 
+    void handleKeyPressed(NativeKeyEvent nativeKeyEvent);
+
+    void handleKeyReleased(NativeKeyEvent nativeKeyEvent);
+
     void handleKeyTyped(NativeKeyEvent nativeKeyEvent);
 
+    void handleMousePressed(NativeMouseEvent nativeMouseEvent);
+
+    void handleMouseReleased(NativeMouseEvent nativeMouseEvent);
+
     void handleMouseClicked(NativeMouseEvent nativeMouseEvent);
+
+    void handleMouseMoved(NativeMouseEvent nativeMouseEvent);
+
+    void handleMouseDragged(NativeMouseEvent nativeMouseEvent);
 
     void setDataBaseWriter(DatabaseWriter dataBaseWriter);
 }

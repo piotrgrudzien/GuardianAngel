@@ -37,11 +37,11 @@ public class BackgroundEventListener implements EventListener, NativeKeyListener
     }
 
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-
+        eventHandler.handleKeyPressed(nativeKeyEvent);
     }
 
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-
+        eventHandler.handleKeyReleased(nativeKeyEvent);
     }
 
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
@@ -53,18 +53,19 @@ public class BackgroundEventListener implements EventListener, NativeKeyListener
     }
 
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-
+        eventHandler.handleMousePressed(nativeMouseEvent);
     }
 
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
+        eventHandler.handleMouseReleased(nativeMouseEvent);
     }
 
     public void nativeMouseMoved(NativeMouseEvent nativeMouseEvent) {
-
+        eventHandler.handleMouseMoved(nativeMouseEvent);
     }
 
     public void nativeMouseDragged(NativeMouseEvent nativeMouseEvent) {
-
+        eventHandler.handleMouseDragged(nativeMouseEvent);
     }
 
     public void nativeMouseWheelMoved(NativeMouseWheelEvent nativeMouseWheelEvent) {

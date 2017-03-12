@@ -8,6 +8,6 @@ public class StoreEventHandlerFactory implements EventHandlerFactory {
     }
 
     public DatabaseWriter createDatabaseWriter() {
-        return new SimpleEventWriter();
+        return new SimpleEventWriter(new SimpleEventFactory());
     }
 }
