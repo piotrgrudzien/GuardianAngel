@@ -7,13 +7,15 @@ import org.jnativehook.mouse.NativeMouseInputListener;
 import org.jnativehook.mouse.NativeMouseWheelEvent;
 import org.jnativehook.mouse.NativeMouseWheelListener;
 
-import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by piotrgrudzien on 3/10/17.
  */
 public class BackgroundEventListener implements EventListener, NativeKeyListener, NativeMouseInputListener, NativeMouseWheelListener {
 
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger(SimpleEventWriter.class.getName());
     private EventHandler eventHandler;
 
     public void setEventHandler(EventHandler eventHandler) {
@@ -24,14 +26,14 @@ public class BackgroundEventListener implements EventListener, NativeKeyListener
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException e) {
-            System.out.println(e.getCode());
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
         GlobalScreen.addNativeMouseListener(this);
         GlobalScreen.addNativeKeyListener(this);
         GlobalScreen.addNativeMouseMotionListener(this);
         GlobalScreen.addNativeMouseWheelListener(this);
-        this.setEventHandler(eventHandlerFactory.createEventHandler());
-        this.eventHandler.setDataBaseWriter(eventHandlerFactory.createDatabaseWriter());
+        setEventHandler(eventHandlerFactory.createEventHandler());
+        eventHandler.setDataBaseWriter(eventHandlerFactory.createDatabaseWriter());
     }
 
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
@@ -43,11 +45,11 @@ public class BackgroundEventListener implements EventListener, NativeKeyListener
     }
 
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-        this.eventHandler.handleKeyTyped(nativeKeyEvent);
+        eventHandler.handleKeyTyped(nativeKeyEvent);
     }
 
     public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-        this.eventHandler.handleMouseClicked(nativeMouseEvent);
+        eventHandler.handleMouseClicked(nativeMouseEvent);
     }
 
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
