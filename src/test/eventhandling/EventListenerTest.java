@@ -5,6 +5,6 @@ import java.io.IOException;
  */
 public class EventListenerTest {
     public static void main(String[] args) throws IOException {
-        EventListener myEventListener = new BackgroundEventListener(new StoreEventHandlerFactory());
+        EventListener myEventListener = new BackgroundEventListener(new BackgroundManagerFactory(), new BackgroundEventFactory());
     }
 }

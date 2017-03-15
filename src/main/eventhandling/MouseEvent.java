@@ -5,16 +5,20 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public class MouseEvent implements Event {
 
-    private NativeMouseEvent nativeMouseEvent;
     private String type;
+    private long when;
+    private int x;
+    private int y;
 
     public MouseEvent(NativeMouseEvent nativeMouseEvent, String type){
-        this.nativeMouseEvent = nativeMouseEvent;
         this.type = type;
+        this.when = nativeMouseEvent.getWhen();
+        this.x = nativeMouseEvent.getX();
+        this.y = nativeMouseEvent.getY();
     }
 
     public String toCSV() {
-        return nativeMouseEvent.getWhen() + "," + type + "," + nativeMouseEvent.getX() + "," + nativeMouseEvent.getY();
+        return when + "," + type + "," + x + "," + y;
     }
 
 

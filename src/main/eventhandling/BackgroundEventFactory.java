@@ -4,7 +4,7 @@ import org.jnativehook.mouse.NativeMouseEvent;
 /**
  * Created by piotrgrudzien on 3/12/17.
  */
-public class SimpleEventFactory implements EventFactory {
+public class BackgroundEventFactory implements EventFactory<NativeKeyEvent, NativeMouseEvent> {
 
     public KeyEvent createKeyEvent(NativeKeyEvent nativeKeyEvent, String type) {
         return new KeyEvent(nativeKeyEvent, type);

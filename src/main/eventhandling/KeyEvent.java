@@ -5,16 +5,21 @@ import org.jnativehook.keyboard.NativeKeyEvent;
  */
 public class KeyEvent implements Event {
 
-    private NativeKeyEvent nativeKeyEvent;
     private String type;
+    private long when;
+    private int rawCode;
+    private char keyChar;
+
 
     public KeyEvent(NativeKeyEvent nativeKeyEvent, String type) {
         this.type = type;
-        this.nativeKeyEvent = nativeKeyEvent;
+        this.when = nativeKeyEvent.getWhen();
+        this.rawCode = nativeKeyEvent.getRawCode();
+        this.keyChar = nativeKeyEvent.getKeyChar();
     }
 
     public String toCSV() {
-        return nativeKeyEvent.getWhen() + "," + type + "," + nativeKeyEvent.getRawCode() + "," + nativeKeyEvent.getKeyChar();
+        return when + "," + type + "," + rawCode + "," + keyChar;
     }
 
     public String type() {
