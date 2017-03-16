@@ -6,11 +6,11 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public class BackgroundEventFactory implements EventFactory<NativeKeyEvent, NativeMouseEvent> {
 
-    public KeyEvent createKeyEvent(NativeKeyEvent nativeKeyEvent, String type) {
-        return new KeyEvent(nativeKeyEvent, type);
+    public KeyEvent createKeyEvent(NativeKeyEvent nativeKeyEvent) {
+        return new KeyEvent(nativeKeyEvent);
     }
 
-    public MouseEvent createMouseEvent(NativeMouseEvent nativeMouseEvent, String type) {
-        return new MouseEvent(nativeMouseEvent, type);
+    public MouseEvent createMouseEvent(NativeMouseEvent nativeMouseEvent) {
+        return new MouseEvent(nativeMouseEvent);
     }
 }

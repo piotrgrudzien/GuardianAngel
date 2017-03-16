@@ -43,35 +43,35 @@ public class BackgroundEventListener implements EventListener<NativeKeyEvent, Na
     }
 
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent, EventType.KEY_PRESSED));
+        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent));
     }
 
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent, EventType.KEY_RELEASED));
+        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent));
     }
 
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent, EventType.KEY_TYPED));
+        eventHandler.handleEvent(eventFactory.createKeyEvent(nativeKeyEvent));
     }
 
     public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
-        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent, EventType.MOUSE_CLICKED));
+        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent));
     }
 
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent, EventType.MOUSE_PRESSED));
+        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent));
     }
 
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent, EventType.MOUSE_RELEASED));
+        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent));
     }
 
     public void nativeMouseMoved(NativeMouseEvent nativeMouseEvent) {
-        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent, EventType.MOUSE_MOVED));
+        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent));
     }
 
     public void nativeMouseDragged(NativeMouseEvent nativeMouseEvent) {
-        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent, EventType.MOUSE_DRAGGED));
+        eventHandler.handleEvent(eventFactory.createMouseEvent(nativeMouseEvent));
     }
 
     public void nativeMouseWheelMoved(NativeMouseWheelEvent nativeMouseWheelEvent) {

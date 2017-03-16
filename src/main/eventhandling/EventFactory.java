@@ -6,8 +6,8 @@ import org.jnativehook.mouse.NativeMouseEvent;
  */
 public interface EventFactory<K, M> {
 
-    KeyEvent createKeyEvent(K event, String type);
+    KeyEvent createKeyEvent(K event);
 
-    MouseEvent createMouseEvent(M event, String type);
+    MouseEvent createMouseEvent(M event);
 
 }
