@@ -37,6 +37,10 @@ public class MouseEvent implements Event {
         }
     }
 
+    public MouseEvent(String mouseEvent) {
+//        TODO implement this constructor
+    }
+
     public String toCSV() {
         return when + "," + type + "," + x + "," + y;
     }

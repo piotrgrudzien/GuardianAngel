@@ -32,6 +32,10 @@ public class KeyEvent implements Event {
         }
     }
 
+    public KeyEvent(String keyEvent) {
+//        TODO implement this constructor
+    }
+
     public String toCSV() {
         return when + "," + type + "," + rawCode + "," + keyChar;
     }
