@@ -10,13 +10,13 @@ public class KeyEvent implements Event {
     private String type;
     private long when;
     private int rawCode;
-    private char keyChar;
+    private String keyChar;
 
 
     public KeyEvent(NativeKeyEvent nativeKeyEvent) {
         this.when = nativeKeyEvent.getWhen();
         this.rawCode = nativeKeyEvent.getRawCode();
-        this.keyChar = nativeKeyEvent.getKeyChar();
+        this.keyChar = String.valueOf(nativeKeyEvent.getKeyChar());
         switch (nativeKeyEvent.getID()){
             case NATIVE_KEY_TYPED:
                 this.type = EventType.KEY_TYPED;
@@ -32,8 +32,11 @@ public class KeyEvent implements Event {
         }
     }
 
-    public KeyEvent(String keyEvent) {
-//        TODO implement this constructor
+    public KeyEvent(String[] keyEvent) {
+        type = keyEvent[1];
+        when = Long.parseLong(keyEvent[0]);
+        rawCode = Integer.parseInt(keyEvent[2]);
+        keyChar = keyEvent[3];
     }
 
     public String toCSV() {
@@ -42,5 +45,8 @@ public class KeyEvent implements Event {
 
     public String type() {
         return type;
+    }
+
+    public void provideSomeMLparams() {
     }
 }

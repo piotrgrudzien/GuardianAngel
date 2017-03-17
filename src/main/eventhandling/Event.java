@@ -6,4 +6,6 @@ public interface Event {
     String toCSV();
 
     String type();
+
+    void provideSomeMLparams();
 }

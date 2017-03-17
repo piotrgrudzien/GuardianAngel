@@ -37,8 +37,11 @@ public class MouseEvent implements Event {
         }
     }
 
-    public MouseEvent(String mouseEvent) {
-//        TODO implement this constructor
+    public MouseEvent(String[] mouseEvent) {
+        type = mouseEvent[1];
+        when = Long.parseLong(mouseEvent[0]);
+        x = Integer.parseInt(mouseEvent[2]);
+        y = Integer.parseInt(mouseEvent[3]);
     }
 
     public String toCSV() {
@@ -48,5 +51,8 @@ public class MouseEvent implements Event {
 
     public String type() {
         return type;
+    }
+
+    public void provideSomeMLparams() {
     }
 }

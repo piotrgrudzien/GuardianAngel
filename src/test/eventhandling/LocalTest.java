@@ -5,6 +5,7 @@ import java.io.IOException;
  */
 public class LocalTest {
     public static void main(String[] args) throws IOException {
-        EventListener myEventListener = new LocalEventListener(new LocalManagerFactory(), new LocalEventFactory());
+        DatabaseReader myEventListener = new LocalEventListener(new LocalManagerFactory(), new LocalEventFactory());
+        myEventListener.readFile("20170312164807.txt");
     }
 }

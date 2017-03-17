@@ -10,7 +10,8 @@ public class LocalEventHandler implements EventHandler {
     }
 
     public void handleEvent(Event event) {
-        databaseWriter.writeEvent(event);
+//        TODO the real magic has to happen here, the event will only provide some params
+        event.provideSomeMLparams();
     }
 
 }
