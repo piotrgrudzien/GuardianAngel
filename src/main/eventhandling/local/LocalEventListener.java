@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +12,7 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
     private static final Logger LOGGER = Logger.getLogger(BackgroundEventListener.class.getName());
     private EventHandler eventHandler;
     private EventFactory<String[], String[]> eventFactory;
+    private MLFactory mlFactory;
 
     public void setEventHandler(EventHandler eventHandler) {
         this.eventHandler = eventHandler;
@@ -20,6 +20,10 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
 
     public void setEventFactory(EventFactory<String[], String[]> eventFactory) {
         this.eventFactory = eventFactory;
+    }
+
+    public void setMLFactory(MLFactory mlFactory) {
+        this.mlFactory = mlFactory;
     }
 
     public LocalEventListener(ManagerFactory managerFactory, EventFactory<String[], String[]> eventFactory) {

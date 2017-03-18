@@ -4,4 +4,6 @@
 public interface DatabaseReader {
 
     void readFile(String fileName);
+
+    void setMLFactory(MLFactory mlFactory);
 }
