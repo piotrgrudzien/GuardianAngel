@@ -44,15 +44,23 @@ public class MouseEvent implements Event {
         y = Integer.parseInt(mouseEvent[3]);
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public String toCSV() {
         return when + "," + type + "," + x + "," + y;
     }
-
 
     public String type() {
         return type;
     }
 
-    public void provideSomeMLparams() {
+    public String provideSomeMLparams() {
+        return toCSV();
     }
 }

@@ -7,5 +7,6 @@ public interface Event {
 
     String type();
 
-    void provideSomeMLparams();
+    String provideSomeMLparams();
+
 }

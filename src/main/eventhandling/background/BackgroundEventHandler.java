@@ -13,4 +13,6 @@ public class BackgroundEventHandler implements EventHandler {
         databaseWriter.writeEvent(event);
     }
 
+    public void setLookup(Lookup lookup) {};
+
 }

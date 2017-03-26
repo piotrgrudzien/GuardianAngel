@@ -36,7 +36,25 @@ public class KeyEvent implements Event {
         type = keyEvent[1];
         when = Long.parseLong(keyEvent[0]);
         rawCode = Integer.parseInt(keyEvent[2]);
-        keyChar = keyEvent[3];
+        try {
+            keyChar = keyEvent[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            if(rawCode == 36) {
+                keyChar = "ENTER";
+            } else if (rawCode == 43) {
+                keyChar = ",";
+            } else {
+                System.out.println(rawCode + ": UNHANDLED_KEY_CHAR");
+            }
+        }
+    }
+
+    public int getRawCode() {
+        return rawCode;
+    }
+
+    public String getKeyChar() {
+        return keyChar;
     }
 
     public String toCSV() {
@@ -47,6 +65,7 @@ public class KeyEvent implements Event {
         return type;
     }
 
-    public void provideSomeMLparams() {
+    public String provideSomeMLparams() {
+        return keyChar;
     }
 }

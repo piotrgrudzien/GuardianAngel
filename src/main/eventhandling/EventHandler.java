@@ -9,4 +9,6 @@ public interface EventHandler {
     void handleEvent(Event event);
 
     void setDataBaseWriter(DatabaseWriter dataBaseWriter);
+
+    void setLookup(Lookup lookup);
 }
