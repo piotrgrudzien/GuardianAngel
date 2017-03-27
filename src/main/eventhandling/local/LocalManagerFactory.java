@@ -10,4 +10,5 @@ public class LocalManagerFactory implements ManagerFactory {
     public DatabaseWriter createDatabaseWriter() {
         return new LocalEventWriter();
     }
+
 }

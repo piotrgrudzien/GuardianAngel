@@ -15,4 +15,6 @@ public class BackgroundEventHandler implements EventHandler {
 
     public void setLookup(Lookup lookup) {};
 
+    public void setModel(Model model) {};
+
 }

@@ -11,4 +11,6 @@ public interface EventHandler {
     void setDataBaseWriter(DatabaseWriter dataBaseWriter);
 
     void setLookup(Lookup lookup);
+
+    void setModel(Model model);
 }
