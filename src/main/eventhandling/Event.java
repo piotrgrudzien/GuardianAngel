@@ -3,6 +3,8 @@
  */
 public interface Event {
 
+    long getWhen();
+
     String toCSV();
 
     String type();

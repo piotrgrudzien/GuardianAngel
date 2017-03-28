@@ -44,6 +44,10 @@ public class MouseEvent implements Event {
         y = Integer.parseInt(mouseEvent[3]);
     }
 
+    public long getWhen() {
+        return when;
+    }
+
     public int getX() {
         return x;
     }

@@ -49,6 +49,10 @@ public class KeyEvent implements Event {
         }
     }
 
+    public long getWhen() {
+        return when;
+    }
+
     public int getRawCode() {
         return rawCode;
     }

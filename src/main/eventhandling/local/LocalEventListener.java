@@ -28,6 +28,7 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
         setEventFactory(eventFactory);
         eventHandler.setDataBaseWriter(managerFactory.createDatabaseWriter());
         eventHandler.setLookup(new Lookup());
+        eventHandler.setModel(new NaiveBayes());
     }
 
     public void readFile(String fileName) {

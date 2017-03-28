@@ -8,20 +8,26 @@ public class Lookup {
 
     // translates code to the actual string (character, usually)
     private Map<KeyInteraction, String> codeToString;
-    // map code or position to indexes is input-output vectors
-    private Map<KeyInteraction, Integer> codeToIndex;
+    // map code or position to indexes of input vectors
+    private Map<KeyInteraction, Integer> inCodeToIndex;
     private Map<Position, Integer> positionToIndex;
+    // map code to indexes of output vectors
+    private Map<KeyInteraction, Integer> outCodeToIndex;
     // keep track of input-output vector length
-    private int vecLength;
+    private int inVecLength, outVecLength;
 
     public Lookup() {
         codeToString = new HashMap<>();
-        codeToIndex = new HashMap<>();
+        inCodeToIndex = new HashMap<>();
         positionToIndex = new HashMap<>();
-        vecLength = 0;
+        outCodeToIndex = new HashMap<>();
+        // leave index 0 for time since last event
+        inVecLength = 1;
+        // time since last event net relevant for output vector
+        outVecLength = 0;
     }
 
-    public void updateDictionariesOnKeyEvent(KeyEvent event) {
+    public int updateInputDictionariesOnKeyEvent(KeyEvent event) {
         KeyInteraction keyInteraction = new KeyInteraction(event.type(), event.getRawCode(), event.getKeyChar());
         if(codeToString.containsKey(keyInteraction)) {
             if(!codeToString.get(keyInteraction).equals(event.getKeyChar())) {
@@ -29,18 +35,37 @@ public class Lookup {
                 " typed dictionary used to hold " + codeToString.get(keyInteraction) +
                         " trying to overwrite with " + event.getKeyChar());
             }
+            return inCodeToIndex.get(keyInteraction);
         } else {
-            System.out.println("Code " + event.getRawCode() + " String " + event.getKeyChar() + " at index " + vecLength);
             codeToString.put(keyInteraction, event.getKeyChar());
-            codeToIndex.put(keyInteraction, vecLength++);
+            inCodeToIndex.put(keyInteraction, inVecLength);
+            return inVecLength++;
         }
     }
 
-    public void updateDictionariesOnMouseEvent(MouseEvent event) {
+    public int updateInputDictionariesOnMouseEvent(MouseEvent event) {
         Position position = new Position(event.getX(), event.getY());
         if(!positionToIndex.containsKey(position)) {
-            System.out.println("X " + event.getX() + " Y " + event.getY() + " at index " + vecLength);
-            positionToIndex.put(position, vecLength++);
+            positionToIndex.put(position, inVecLength);
+            return inVecLength++;
+        } else {
+            return positionToIndex.get(position);
+        }
+    }
+
+    public int updateOutputDictionariesOnKeyEvent(KeyEvent event) {
+        KeyInteraction keyInteraction = new KeyInteraction(event.type(), event.getRawCode(), event.getKeyChar());
+        if(codeToString.containsKey(keyInteraction)) {
+            if(!codeToString.get(keyInteraction).equals(event.getKeyChar())) {
+                System.out.println("For raw code " + event.getRawCode() +
+                        " typed dictionary used to hold " + codeToString.get(keyInteraction) +
+                        " trying to overwrite with " + event.getKeyChar());
+            }
+            return outCodeToIndex.get(keyInteraction);
+        } else {
+            codeToString.put(keyInteraction, event.getKeyChar());
+            outCodeToIndex.put(keyInteraction, outVecLength);
+            return outVecLength++;
         }
     }
 

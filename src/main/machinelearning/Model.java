@@ -3,4 +3,7 @@
  */
 interface Model {
 
+    long getModelTime();
+
+    void feedEvent(long when, int index, boolean isOutput);
 }

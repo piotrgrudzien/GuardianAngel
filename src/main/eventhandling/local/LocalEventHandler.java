@@ -16,18 +16,27 @@ public class LocalEventHandler implements EventHandler {
     }
 
     public void setModel(Model model) {
-        this.model = new NaiveBayes();
+        this.model = model;
     }
 
     public void handleEvent(Event event) {
 //        TODO the real magic has to happen here, the event will only provide some params
-        if(event.type().equals(EventType.KEY_TYPED) ||
-                event.type().equals(EventType.KEY_PRESSED) ||
-                event.type().equals(EventType.KEY_RELEASED)) {
-            lookup.updateDictionariesOnKeyEvent((KeyEvent)event);
+        int index;
+        boolean isOutput = false;
+        // update model on KEY_PRESSED, KEY_RELEASED and MOUSE_CLICKED
+        // predict on KEY_TYPED - always happens 0 ms after KEY_PRESSED
+        if(event.type().equals(EventType.KEY_PRESSED) || event.type().equals(EventType.KEY_RELEASED)) {
+            index = lookup.updateInputDictionariesOnKeyEvent((KeyEvent)event);
         } else if(event.type().equals(EventType.MOUSE_CLICKED)) {
-            lookup.updateDictionariesOnMouseEvent((MouseEvent)event);
+            index = lookup.updateInputDictionariesOnMouseEvent((MouseEvent)event);
+        } else if(event.type().equals(EventType.KEY_TYPED)) {
+            index = lookup.updateOutputDictionariesOnKeyEvent((KeyEvent)event);
+            isOutput = true;
+        } else {
+            return;
         }
+        System.out.println("Feeding in: " + event.toCSV());
+        model.feedEvent(event.getWhen(), index, isOutput);
     }
 
 }
