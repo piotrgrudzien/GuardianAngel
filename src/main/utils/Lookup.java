@@ -8,6 +8,10 @@ public class Lookup {
 
     // translates code to the actual string (character, usually)
     private Map<KeyInteraction, String> codeToString;
+    // translates input index to the actual string
+    private Map<Integer, String> inIndexToString;
+    // translates output index to the actual string
+    private Map<Integer, String> outIndexToString;
     // map code or position to indexes of input vectors
     private Map<KeyInteraction, Integer> inCodeToIndex;
     private Map<Position, Integer> positionToIndex;
@@ -18,6 +22,8 @@ public class Lookup {
 
     public Lookup() {
         codeToString = new HashMap<>();
+        inIndexToString = new HashMap<>();
+        outIndexToString = new HashMap<>();
         inCodeToIndex = new HashMap<>();
         positionToIndex = new HashMap<>();
         outCodeToIndex = new HashMap<>();
@@ -25,6 +31,14 @@ public class Lookup {
         inVecLength = 1;
         // time since last event net relevant for output vector
         outVecLength = 0;
+    }
+
+    public int inputSize() {
+        return inVecLength;
+    }
+
+    public int outputSize() {
+        return outVecLength;
     }
 
     public int updateInputDictionariesOnKeyEvent(KeyEvent event) {
@@ -39,6 +53,7 @@ public class Lookup {
         } else {
             codeToString.put(keyInteraction, event.getKeyChar());
             inCodeToIndex.put(keyInteraction, inVecLength);
+            inIndexToString.put(inVecLength, event.getKeyChar());
             return inVecLength++;
         }
     }
@@ -65,8 +80,17 @@ public class Lookup {
         } else {
             codeToString.put(keyInteraction, event.getKeyChar());
             outCodeToIndex.put(keyInteraction, outVecLength);
+            outIndexToString.put(outVecLength, event.getKeyChar());
             return outVecLength++;
         }
+    }
+
+    public String getStringFromInputIndex(int index) {
+        return inIndexToString.get(index);
+    }
+
+    public String getStringFromOutputIndex(int index) {
+        return outIndexToString.get(index);
     }
 
 }
