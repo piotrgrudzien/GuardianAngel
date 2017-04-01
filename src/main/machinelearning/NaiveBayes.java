@@ -12,6 +12,7 @@ public class NaiveBayes implements Model {
     private int outputSize;
     private int correctPredictions;
     private int totalPredictions;
+    private double logloss;
     private Random rand;
     private DecimalFormat percentFormat;
 
@@ -23,6 +24,7 @@ public class NaiveBayes implements Model {
         prediction = new double[outputSize];
         correctPredictions = 0;
         totalPredictions = 0;
+        logloss = 0;
         rand = new Random();
 //        rand.setSeed(152);
         percentFormat = new DecimalFormat("##.##%");
@@ -35,35 +37,36 @@ public class NaiveBayes implements Model {
     public void feedEvent(long when, int index, String eventType) {
         long dt = when - modelTime;
         modelTime = when;
-        // don't update the model when isOutput is true
-        // make a prediction for every event and then check the prediction
-        // if the event directly succeeding is a key typed event
-        updatePrediction(dt);
-//        TODO figure out what to do to the model for different event types
-//        if(!isKeyTyped) {
-//            updateModel(dt, index);
-//        } else {
-//            scorePrediction(index);
-//        }
+        // update prediction on all except KT
+        // check your current prediction on KT
+        // update stats on all except KT
+
+        if(!eventType.equals(EventType.KEY_TYPED)) {
+            updatePrediction(dt);
+        } else {
+            updateStats(dt, index);
+            scorePrediction(index);
+        }
     }
 
     private void updatePrediction(long dt) {
-        // this method updates prediction for every event
-        // before you can see what the event is
+        // Bayesian update
+        // add log probability for the event
         for (int i = 0; i < outputSize; i++) {
             prediction[i] = rand.nextFloat();
         }
     }
 
-    private void updateModel(long dt, int index) {
-        // this method updates the model incorporating
-        // information about then new event
+    private void updateStats(long dt, int index) {
+        // you received a label
+        // update stats for events since the previous label
     }
 
     private void scorePrediction(int labelIndex) {
         // this method is called on a key typed event
         // which provides a label which is used to score
         // the prediction made
+        // TODO add top5 accuracy
         int indexMax = 0;
         double max = prediction[indexMax];
         for (int i = 1; i < outputSize; i++) {
@@ -74,10 +77,12 @@ public class NaiveBayes implements Model {
         }
         if(indexMax == labelIndex) {
             correctPredictions++;
+            logloss -= Math.log(max + 10E-16);
         }
         totalPredictions++;
-        System.out.println("Accuracy " + percentFormat.format((double) correctPredictions / totalPredictions) +
-        " (" + correctPredictions + "/" + totalPredictions + ") random guess benchmark: " +
+        System.out.println("Logloss " + (logloss / totalPredictions) +
+                " Accuracy " + percentFormat.format((double) correctPredictions / totalPredictions) +
+        " (" + correctPredictions + "/" + totalPredictions + ") Random guess benchmark: " +
         percentFormat.format((double) 1 / outputSize));
     }
 }
