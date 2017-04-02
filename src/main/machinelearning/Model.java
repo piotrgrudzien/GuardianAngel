@@ -6,4 +6,11 @@ interface Model {
     long getModelTime();
 
     void feedEvent(long when, int index, String eventType);
+
+    void setLookup(Lookup lookup);
+
+    Lookup getLookup();
+
+    void printResults();
+
 }

@@ -8,12 +8,14 @@ import java.util.Random;
  */
 public class NaiveBayes implements Model {
 
+    public Lookup lookup;
     private long modelTime;
     private double[] prediction;
     private int inputSize;
     private int outputSize;
     private int correctPredictionsTop1;
     private int correctPredictionsTop3;
+    private int correctPredictionsTop5;
     private int totalPredictions;
     private double logloss;
     private Random rand;
@@ -24,11 +26,12 @@ public class NaiveBayes implements Model {
     public NaiveBayes() {
         modelTime = 0;
         // file1.txt
-        inputSize = 224;
-        outputSize = 92;
+        inputSize = 234;
+        outputSize = 100;
         prediction = new double[outputSize];
         correctPredictionsTop1 = 0;
         correctPredictionsTop3 = 0;
+        correctPredictionsTop5 = 0;
         totalPredictions = 0;
         logloss = 0;
         rand = new Random();
@@ -37,6 +40,14 @@ public class NaiveBayes implements Model {
         shortMemory = new ArrayList<>();
         naiveStats = new NaiveStats(outputSize);
         setPrior();
+    }
+
+    public void setLookup(Lookup lookup) {
+        this.lookup = lookup;
+    }
+
+    public Lookup getLookup() {
+        return this.lookup;
     }
 
     private void setPrior() {
@@ -64,6 +75,10 @@ public class NaiveBayes implements Model {
         } else {
             naiveStats.update(shortMemory, index);
             scorePrediction(index);
+            // need to clear short-term memory
+            // to start a new sequence
+            shortMemory.clear();
+            setPrior();
         }
     }
 
@@ -74,45 +89,44 @@ public class NaiveBayes implements Model {
 //        }
         // Naive Bayes Update
         double[] update = naiveStats.getLogUpdate(indexedEvent);
-
         for (int i = 0; i < outputSize; i++) {
             prediction[i] += update[i];
         }
-
     }
 
     private void scorePrediction(int outputIndex) {
         // this method is called on a key typed event
         // which provides a label which is used to score
         // the prediction made
-        int indexMax1 = 0, indexMax2 = 0, indexMax3 = 0;
-        double max1 = 0, max2 = 0, max3 = 0;
-        for (int i = 1; i < outputSize; i++) {
-            if(prediction[i] > max1) {
-                indexMax3 = indexMax2; max3 = max2;
-                indexMax2 = indexMax1; max2 = max1;
-                indexMax1 = i; max1 = prediction[i];
-            } else if(prediction[i] > max2) {
-                indexMax3 = indexMax2; max3 = max2;
-                indexMax2 = i; max2 = prediction[i];
-            } else if(prediction[i] > max3) {
-                indexMax3 = i; max3 = prediction[i];
-            }
-        }
-        if(indexMax1 == outputIndex) {
+        int[] top5 = ArrayHelper.getTop5Indexes(prediction);
+        if(top5[0] == outputIndex) {
             correctPredictionsTop1++;
             correctPredictionsTop3++;
-            logloss -= Math.log(max1 + 10E-16);
-        } else if((indexMax2 == outputIndex) || (indexMax3 == outputIndex)) {
+            correctPredictionsTop5++;
+        } else if((top5[1] == outputIndex) || (top5[2] == outputIndex)) {
             correctPredictionsTop3++;
+            correctPredictionsTop5++;
+        } else if((top5[3] == outputIndex) || (top5[4] == outputIndex)) {
+            correctPredictionsTop5++;
         }
         totalPredictions++;
-        if(totalPredictions % 1000 == 0) {
-            System.out.println("Logloss " + (logloss / totalPredictions) +
-                    " Accuracy " + percentFormat.format((double) correctPredictionsTop1 / totalPredictions) +
-                    " (" + correctPredictionsTop1 + "/" + totalPredictions + ")" +
-                    " Accuracy Top3 " + percentFormat.format((double) correctPredictionsTop3 / totalPredictions) +
-                    " (" + correctPredictionsTop3 + "/" + totalPredictions + ")");
+        if(totalPredictions > 65000) {
+            describePrediction(outputIndex);
         }
+    }
+
+    private void describePrediction(int outputIndex) {
+        System.out.print("\nJust in: " + lookup.getStringFromOutputIndex(outputIndex) + " ");
+        ArrayHelper.reportTopPredictions(prediction, lookup);
+    }
+
+    public void printResults() {
+        System.out.println(
+                "Accuracy " + percentFormat.format((double) correctPredictionsTop1 / totalPredictions) +
+                        " (" + correctPredictionsTop1 + "/" + totalPredictions + ")" +
+                        " Accuracy Top3 " + percentFormat.format((double) correctPredictionsTop3 / totalPredictions) +
+                        " (" + correctPredictionsTop3 + "/" + totalPredictions + ")" +
+                        " Accuracy Top5 " + percentFormat.format((double) correctPredictionsTop5 / totalPredictions) +
+                        " (" + correctPredictionsTop5 + "/" + totalPredictions + ")");
     }
 }

@@ -38,8 +38,12 @@ public class NaiveStats {
             double[] update = counts.get(indexedEvent);
             double updateSum = ArrayHelper.sum(update);
             for (int i = 0; i < outputSize; i++) {
-                logUpdate[i] = Math.log((update[i] + 10E-16) / updateSum);
+                logUpdate[i] = Math.log((update[i] + 2E-8) / updateSum);
             }
+//            System.out.println("==");
+//            System.out.println("Update: " + ArrayHelper.print(update));
+//            System.out.println("Log update: " + ArrayHelper.print(logUpdate));
+//            System.out.println("==");
             return logUpdate;
         }
         return logPrior;

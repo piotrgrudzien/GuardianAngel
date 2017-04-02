@@ -27,7 +27,6 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
         setEventHandler(managerFactory.createEventHandler());
         setEventFactory(eventFactory);
         eventHandler.setDataBaseWriter(managerFactory.createDatabaseWriter());
-        eventHandler.setLookup(new Lookup());
         eventHandler.setModel(new NaiveBayes());
     }
 
@@ -47,8 +46,14 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
                 } else {
                     System.out.println("Event of unknown type: " + line);
                 }
+                if(lineCount % 10000 == 0) {
+                    System.out.println("Read " + lineCount + " lines");
+                }
             }
             System.out.println("Read " + lineCount + " lines");
+            eventHandler.printResults();
+            System.out.println("Simplest untested Naive Bayes benchmark:");
+            System.out.println("Accuracy 31.99% (23995/75000) Accuracy Top3 76.36% (57271/75000) Accuracy Top5 76.48% (57357/75000)");
             fileReader.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);

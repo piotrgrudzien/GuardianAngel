@@ -25,4 +25,8 @@ public class KeyInteraction {
     public int hashCode() {
         return this.eventType.hashCode() + this.rawCode + this.keyChar.hashCode();
     }
+
+    public String toString() {
+        return "(" + rawCode + ", " + keyChar + ")";
+    }
 }

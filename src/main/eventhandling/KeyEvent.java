@@ -37,15 +37,33 @@ public class KeyEvent implements Event {
         when = Long.parseLong(keyEvent[0]);
         rawCode = Integer.parseInt(keyEvent[2]);
         try {
-            keyChar = keyEvent[3];
-        } catch (ArrayIndexOutOfBoundsException e) {
             if(rawCode == 36) {
                 keyChar = "ENTER";
             } else if (rawCode == 43) {
                 keyChar = ",";
+            } else if (rawCode == 49) {
+                keyChar = "SPACE";
+            } else if (rawCode == 123) {
+                keyChar = "KEY_LEFT";
+            } else if (rawCode == 124) {
+                keyChar = "KEY_RIGHT";
+            } else if (rawCode == 125) {
+                keyChar = "KEY_DOWN";
+            } else if (rawCode == 126) {
+                keyChar = "KEY_UP";
+            } else if (rawCode == 48) {
+                keyChar = "TAB";
+            } else if (rawCode == 51) {
+                keyChar = "DELETE";
+            } else if (rawCode == 53) {
+                keyChar = "ESCAPE";
             } else {
-                System.out.println(rawCode + ": UNHANDLED_KEY_CHAR");
+                keyChar = keyEvent[3];
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.toString());
+            System.out.println("Problem with rawCode " + rawCode);
+            System.exit(1);
         }
     }
 

@@ -4,7 +4,6 @@
 public class IndexedEvent {
 
     private long dt;
-
     private int inputIndex;
 
     public IndexedEvent(long dt, int inputIndex) {
@@ -12,7 +11,7 @@ public class IndexedEvent {
         this.inputIndex = inputIndex;
     }
 
-    private long clipDt(long dt) {
+    public long clipDt(long dt) {
         if(dt < 200) {
             return dt / 20;
         } else {
@@ -31,4 +30,13 @@ public class IndexedEvent {
     public int hashCode() {
         return (int)dt + inputIndex;
     }
+
+    public long getDt() {
+        return dt;
+    }
+
+    public int getInputIndex() {
+        return inputIndex;
+    }
+
 }

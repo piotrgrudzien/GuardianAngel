@@ -17,4 +17,6 @@ public class BackgroundEventHandler implements EventHandler {
 
     public void setModel(Model model) {};
 
+    public void printResults() {};
+
 }

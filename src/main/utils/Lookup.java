@@ -93,4 +93,12 @@ public class Lookup {
         return outIndexToString.get(index);
     }
 
+    public Map<Integer, String> getOutIndexToStringMap() {
+        return outIndexToString;
+    }
+
+    public Map<KeyInteraction, Integer> getOutCodeToIndex() {
+        return outCodeToIndex;
+    }
+
 }
