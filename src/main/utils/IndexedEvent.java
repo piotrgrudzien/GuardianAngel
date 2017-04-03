@@ -13,7 +13,7 @@ public class IndexedEvent {
 
     public long clipDt(long dt) {
         if(dt < 200) {
-            return dt / 20;
+            return dt / 50;
         } else {
             return 200;
         }

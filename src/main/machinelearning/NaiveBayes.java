@@ -20,14 +20,13 @@ public class NaiveBayes implements Model {
     private double logloss;
     private Random rand;
     private DecimalFormat percentFormat;
-    private List<IndexedEvent> shortMemory;
     private NaiveStats naiveStats;
 
     public NaiveBayes() {
         modelTime = 0;
         // file1.txt
-        inputSize = 234;
-        outputSize = 100;
+        inputSize = 100;
+        outputSize = 99;
         prediction = new double[outputSize];
         correctPredictionsTop1 = 0;
         correctPredictionsTop3 = 0;
@@ -37,7 +36,6 @@ public class NaiveBayes implements Model {
         rand = new Random();
 //        rand.setSeed(152);
         percentFormat = new DecimalFormat("##.##%");
-        shortMemory = new ArrayList<>();
         naiveStats = new NaiveStats(outputSize);
         setPrior();
     }
@@ -65,21 +63,13 @@ public class NaiveBayes implements Model {
     public void feedEvent(long when, int index, String eventType) {
         long dt = when - modelTime;
         modelTime = when;
-        // update prediction on all except KT
-        // check your current prediction on KT
-        // update stats on all except KT
-        if(!eventType.equals(EventType.KEY_TYPED)) {
-            IndexedEvent indexedEvent = new IndexedEvent(dt, index);
-            shortMemory.add(indexedEvent);
-            updatePrediction(indexedEvent);
-        } else {
-            naiveStats.update(shortMemory, index);
-            scorePrediction(index);
-            // need to clear short-term memory
-            // to start a new sequence
-            shortMemory.clear();
-            setPrior();
-        }
+        // event comes in
+        updatePrediction(dt); // update prediction just looking at dt
+        scorePrediction(index); // score prediction
+        // now you've observed what the key typed was
+        // update all the relevant stats
+        // need to always remember n events and update stats n times for each one
+        naiveStats.update(new IndexedEvent(dt, index)); 
     }
 
     private void updatePrediction(IndexedEvent indexedEvent) {

@@ -63,7 +63,7 @@ public class ArrayHelper {
         double normConstant = expAndSum(prediction);
         System.out.print("Preds: ");
         for (int index : top5Indexes) {
-            System.out.print(lookup.getOutIndexToStringMap().get(index) + " " +
+            System.out.print(lookup.getIndexToStringMap().get(index) + " " +
 //                    " [index " + index + "] " +
 //                    + prediction[index] + " " +
                     percentFormat.format((double) Math.exp(prediction[index]) / normConstant) + " ");

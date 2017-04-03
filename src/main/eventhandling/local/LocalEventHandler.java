@@ -18,19 +18,12 @@ public class LocalEventHandler implements EventHandler {
     public void handleEvent(Event event) {
 //        TODO the real magic has to happen here, the event will only provide some params
         int index;
-        // update model on KEY_PRESSED, KEY_RELEASED and MOUSE_CLICKED
-        // predict on KEY_TYPED - always happens 0 ms after KEY_PRESSED
-        if(event.type().equals(EventType.KEY_PRESSED) || event.type().equals(EventType.KEY_RELEASED)) {
-            index = model.getLookup().updateInputDictionariesOnKeyEvent((KeyEvent)event);
-        } else if(event.type().equals(EventType.MOUSE_CLICKED)) {
-            index = model.getLookup().updateInputDictionariesOnMouseEvent((MouseEvent)event);
-        } else if(event.type().equals(EventType.KEY_TYPED)) {
-            index = model.getLookup().updateOutputDictionariesOnKeyEvent((KeyEvent)event);
-        } else {
-            return;
+        // let's look at key typed events only
+        if(event.type().equals(EventType.KEY_TYPED)) {
+            index = model.getLookup().updateDictionary((KeyEvent) event);
+            model.feedEvent(event.getWhen(), index, event.type());
         }
-        model.feedEvent(event.getWhen(), index, event.type());
-//        System.out.println("Input size " + lookup.inputSize() + " Output size " + lookup.outputSize());
+//        System.out.println("Input size " + model.getLookup().inputSize() + " Output size " + model.getLookup().outputSize());
     }
 
     public void printResults() {

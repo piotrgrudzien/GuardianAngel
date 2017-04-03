@@ -52,8 +52,8 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
             }
             System.out.println("Read " + lineCount + " lines");
             eventHandler.printResults();
-            System.out.println("Simplest untested Naive Bayes benchmark:");
-            System.out.println("Accuracy 31.99% (23995/75000) Accuracy Top3 76.36% (57271/75000) Accuracy Top5 76.48% (57357/75000)");
+            System.out.println("Simplest untested Naive Bayes looking at current sequence only:");
+            System.out.println("Accuracy 9.31% (7025/75447) Accuracy Top3 17.33% (13074/75447) Accuracy Top5 23.68% (17864/75447)");
             fileReader.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);

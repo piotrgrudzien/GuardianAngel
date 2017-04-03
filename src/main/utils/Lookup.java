@@ -6,42 +6,28 @@ import java.util.Map;
  */
 public class Lookup {
 
-    // translates code to the actual string (character, usually)
     private Map<KeyInteraction, String> codeToString;
-    // translates input index to the actual string
-    private Map<Integer, String> inIndexToString;
-    // translates output index to the actual string
-    private Map<Integer, String> outIndexToString;
-    // map code or position to indexes of input vectors
-    private Map<KeyInteraction, Integer> inCodeToIndex;
-    private Map<Position, Integer> positionToIndex;
-    // map code to indexes of output vectors
-    private Map<KeyInteraction, Integer> outCodeToIndex;
-    // keep track of input-output vector length
-    private int inVecLength, outVecLength;
+    private Map<Integer, String> indexToString;
+    private Map<KeyInteraction, Integer> codeToIndex;
+    private int dimension;
 
     public Lookup() {
         codeToString = new HashMap<>();
-        inIndexToString = new HashMap<>();
-        outIndexToString = new HashMap<>();
-        inCodeToIndex = new HashMap<>();
-        positionToIndex = new HashMap<>();
-        outCodeToIndex = new HashMap<>();
-        // leave index 0 for time since last event
-        inVecLength = 1;
-        // time since last event net relevant for output vector
-        outVecLength = 0;
+        indexToString = new HashMap<>();
+        codeToIndex = new HashMap<>();
+        dimension = 0;
     }
 
     public int inputSize() {
-        return inVecLength;
+        // index zero for time since last event
+        return dimension + 1;
     }
 
     public int outputSize() {
-        return outVecLength;
+        return dimension;
     }
 
-    public int updateInputDictionariesOnKeyEvent(KeyEvent event) {
+    public int updateDictionary(KeyEvent event) {
         KeyInteraction keyInteraction = new KeyInteraction(event.type(), event.getRawCode(), event.getKeyChar());
         if(codeToString.containsKey(keyInteraction)) {
             if(!codeToString.get(keyInteraction).equals(event.getKeyChar())) {
@@ -49,56 +35,29 @@ public class Lookup {
                 " typed dictionary used to hold " + codeToString.get(keyInteraction) +
                         " trying to overwrite with " + event.getKeyChar());
             }
-            return inCodeToIndex.get(keyInteraction);
+            return codeToIndex.get(keyInteraction);
         } else {
             codeToString.put(keyInteraction, event.getKeyChar());
-            inCodeToIndex.put(keyInteraction, inVecLength);
-            inIndexToString.put(inVecLength, event.getKeyChar());
-            return inVecLength++;
-        }
-    }
-
-    public int updateInputDictionariesOnMouseEvent(MouseEvent event) {
-        Position position = new Position(event.getX(), event.getY());
-        if(!positionToIndex.containsKey(position)) {
-            positionToIndex.put(position, inVecLength);
-            return inVecLength++;
-        } else {
-            return positionToIndex.get(position);
-        }
-    }
-
-    public int updateOutputDictionariesOnKeyEvent(KeyEvent event) {
-        KeyInteraction keyInteraction = new KeyInteraction(event.type(), event.getRawCode(), event.getKeyChar());
-        if(codeToString.containsKey(keyInteraction)) {
-            if(!codeToString.get(keyInteraction).equals(event.getKeyChar())) {
-                System.out.println("For raw code " + event.getRawCode() +
-                        " typed dictionary used to hold " + codeToString.get(keyInteraction) +
-                        " trying to overwrite with " + event.getKeyChar());
-            }
-            return outCodeToIndex.get(keyInteraction);
-        } else {
-            codeToString.put(keyInteraction, event.getKeyChar());
-            outCodeToIndex.put(keyInteraction, outVecLength);
-            outIndexToString.put(outVecLength, event.getKeyChar());
-            return outVecLength++;
+            codeToIndex.put(keyInteraction, dimension);
+            indexToString.put(dimension, event.getKeyChar());
+            return dimension++;
         }
     }
 
     public String getStringFromInputIndex(int index) {
-        return inIndexToString.get(index);
+        return indexToString.get(index - 1);
     }
 
     public String getStringFromOutputIndex(int index) {
-        return outIndexToString.get(index);
+        return indexToString.get(index);
     }
 
-    public Map<Integer, String> getOutIndexToStringMap() {
-        return outIndexToString;
+    public Map<Integer, String> getIndexToStringMap() {
+        return indexToString;
     }
 
-    public Map<KeyInteraction, Integer> getOutCodeToIndex() {
-        return outCodeToIndex;
+    public Map<KeyInteraction, Integer> getCodeToIndex() {
+        return codeToIndex;
     }
 
 }
