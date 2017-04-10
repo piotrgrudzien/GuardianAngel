@@ -1,16 +1,17 @@
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
  * Created by piotrgrudzien on 3/27/17.
  */
-public class NaiveBayes implements Model {
+public class NaiveBayesNoOrder implements Model {
 
     public Lookup lookup;
     private long modelTime;
-    private double[] prediction;
+    private int naiveBayesDepth;
+    private LinkedList<double[]> predictionFactors;
+    private double[] currentPrediction;
     private int inputSize;
     private int outputSize;
     private int correctPredictionsTop1;
@@ -22,22 +23,26 @@ public class NaiveBayes implements Model {
     private DecimalFormat percentFormat;
     private NaiveStats naiveStats;
 
-    public NaiveBayes() {
+    public NaiveBayesNoOrder() {
         modelTime = 0;
         // file1.txt
         inputSize = 100;
         outputSize = 99;
-        prediction = new double[outputSize];
+        naiveBayesDepth = 32*2;
+        predictionFactors = new LinkedList<>();
+        for(int i = 0; i < naiveBayesDepth; i++) {
+            predictionFactors.add(new double[outputSize]);
+        }
+        currentPrediction = ArrayHelper.arrayofConst(outputSize, (double) 1 / outputSize);
         correctPredictionsTop1 = 0;
         correctPredictionsTop3 = 0;
         correctPredictionsTop5 = 0;
         totalPredictions = 0;
         logloss = 0;
         rand = new Random();
-//        rand.setSeed(152);
-        percentFormat = new DecimalFormat("##.##%");
+        rand.setSeed(152);
+        percentFormat = new DecimalFormat("##.#%");
         naiveStats = new NaiveStats(outputSize);
-        setPrior();
     }
 
     public void setLookup(Lookup lookup) {
@@ -46,14 +51,6 @@ public class NaiveBayes implements Model {
 
     public Lookup getLookup() {
         return this.lookup;
-    }
-
-    private void setPrior() {
-        // completely uninformed prior
-        // next try better priors based on previous characters
-        for (int i = 0; i < outputSize; i++) {
-            prediction[i] = Math.log(((double) 1) / outputSize);
-        }
     }
 
     public long getModelTime() {
@@ -67,28 +64,48 @@ public class NaiveBayes implements Model {
         updatePrediction(dt); // update prediction just looking at dt
         scorePrediction(index); // score prediction
         // now you've observed what the key typed was
-        // update all the relevant stats
-        // need to always remember n events and update stats n times for each one
-        naiveStats.update(new IndexedEvent(dt, index)); 
+        IndexedEvent indexedEvent = new IndexedEvent(dt, index);
+        naiveStats.update(indexedEvent);
+        updatePrediction(indexedEvent);
     }
 
-    private void updatePrediction(IndexedEvent indexedEvent) {
-        // random guess
-//        for (int i = 0; i < outputSize; i++) {
-//            prediction[i] = rand.nextFloat();
-//        }
+    private void updatePrediction(IndexedEvent event) {
         // Naive Bayes Update
-        double[] update = naiveStats.getLogUpdate(indexedEvent);
-        for (int i = 0; i < outputSize; i++) {
-            prediction[i] += update[i];
+        updatePredictionFactors(naiveStats.getLogUpdate(event));
+    }
+
+    private void updatePrediction(long dt) {
+        // Naive Bayes Update
+        updatePredictionFactors(naiveStats.getLogUpdate(dt));
+    }
+
+    private void updatePredictionFactors(double[] update) {
+        predictionFactors.addFirst(update);
+        if (predictionFactors.size() > naiveBayesDepth) {
+            predictionFactors.removeLast();
         }
+        double[] res = ArrayHelper.arrayofConst(outputSize, 0);
+        for(double[] factor : predictionFactors) {
+            if(res == null) {
+                res = factor;
+            } else {
+                res = ArrayHelper.addElementwise(res, factor);
+            }
+        }
+//        System.out.println("Predictions: [" + ArrayHelper.min(res) + ", " + ArrayHelper.max(res) + " ] : [" +
+//        Math.exp(ArrayHelper.min(res)) + ", " + Math.exp(ArrayHelper.max(res)) + "]");
+        if(res != null) currentPrediction = res;
     }
 
     private void scorePrediction(int outputIndex) {
-        // this method is called on a key typed event
-        // which provides a label which is used to score
-        // the prediction made
-        int[] top5 = ArrayHelper.getTop5Indexes(prediction);
+        // random guess
+//        double[] randomPrediction = new double[outputSize];
+//        for (int i = 0; i < outputSize; i++) {
+//            randomPrediction[i] = rand.nextFloat();
+//        }
+//        currentPrediction = randomPrediction;
+
+        int[] top5 = ArrayHelper.getTop5Indexes(currentPrediction);
         if(top5[0] == outputIndex) {
             correctPredictionsTop1++;
             correctPredictionsTop3++;
@@ -107,7 +124,7 @@ public class NaiveBayes implements Model {
 
     private void describePrediction(int outputIndex) {
         System.out.print("\nJust in: " + lookup.getStringFromOutputIndex(outputIndex) + " ");
-        ArrayHelper.reportTopPredictions(prediction, lookup);
+        ArrayHelper.reportTopPredictions(currentPrediction, lookup);
     }
 
     public void printResults() {

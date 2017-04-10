@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +25,7 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
         setEventHandler(managerFactory.createEventHandler());
         setEventFactory(eventFactory);
         eventHandler.setDataBaseWriter(managerFactory.createDatabaseWriter());
-        eventHandler.setModel(new NaiveBayes());
+        eventHandler.setModel(new NaiveBayesNoOrder());
     }
 
     public void readFile(String fileName) {
@@ -52,8 +50,10 @@ public class LocalEventListener implements EventListener<String[], String[]>, Da
             }
             System.out.println("Read " + lineCount + " lines");
             eventHandler.printResults();
-            System.out.println("Simplest untested Naive Bayes looking at current sequence only:");
-            System.out.println("Accuracy 9.31% (7025/75447) Accuracy Top3 17.33% (13074/75447) Accuracy Top5 23.68% (17864/75447)");
+            System.out.println("Random accuracy:");
+            System.out.println("Accuracy 1% (753/75447) Accuracy Top3 2.93% (2211/75447) Accuracy Top5 4.9% (3699/75447)");
+            System.out.println("Naive Bayes no order, depth 32*2, dt clipped at 600, interval 50");
+            System.out.println("Accuracy 15.4% (11640/75447) Accuracy Top3 29.6% (22362/75447) Accuracy Top5 40.3% (30413/75447)");
             fileReader.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);

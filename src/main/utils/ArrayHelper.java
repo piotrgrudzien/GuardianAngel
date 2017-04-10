@@ -16,6 +16,26 @@ public class ArrayHelper {
         return res;
     }
 
+    public static double min(double[] arr) {
+        double min = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+        }
+        return min;
+    }
+
+    public static double max(double[] arr) {
+        double max = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
     public static String print(double[] arr) {
         return Arrays.toString(arr);
     }
@@ -76,5 +96,23 @@ public class ArrayHelper {
             sum += Math.exp(prediction[i]);
         }
         return sum;
+    }
+
+    public static double[] arrayofConst(int size, double num) {
+        double[] res = new double[size];
+        for (int i = 0; i < size; i++) {
+            res[i] = num;
+        }
+        return res;
+    }
+
+    public static double[] addElementwise(double[] a, double[] b) {
+        if(a.length != b.length) {
+            System.out.println("Attempting to add arrays of sizes " + a.length + " and " + b.length);
+        }
+        for (int i = 0; i < a.length; i++) {
+            a[i] += b[i];
+        }
+        return a;
     }
 }

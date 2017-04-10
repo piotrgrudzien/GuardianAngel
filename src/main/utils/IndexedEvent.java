@@ -11,12 +11,16 @@ public class IndexedEvent {
         this.inputIndex = inputIndex;
     }
 
-    public long clipDt(long dt) {
-        if(dt < 200) {
+    public static long clipDt(long dt) {
+        if(dt < 600) {
             return dt / 50;
         } else {
-            return 200;
+            return 600;
         }
+    }
+
+    public static int clipDtToInteger(long dt) {
+        return (int)clipDt(dt);
     }
 
     public boolean equals(Object o) {
